@@ -13,7 +13,7 @@ if st.button("获取图片"):
         # 调用 API 获取数据
         response = requests.post(
             "https://simple-api.glif.app",
-            json={"id": "clxv8wwhj0000b3f5shjg1221q3xy", "inputs": [inputs]},
+            json={"id": "clxv8wwhj0000b3f5shjg1221q3xy", "inputs": ["抖音主播李佳琪"]},
             headers={"Authorization": "Bearer b54c3ea9ec3f0b518d14152a5db90995"},
         )
         
