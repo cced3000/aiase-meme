@@ -4,6 +4,10 @@ import requests
 # Streamlit 应用的标题
 st.title("AIbase-职业/人物生成器")
 
+if 'api_key' not in st.session_state:
+    st.session_state.api_key = API_KEY
+
+
 # 创建一个输入框让用户输入内容，并限制输入字数不超过20个字
 inputs = st.text_input("请输入职业/人物", "ai prompt Engineer", max_chars=20)
 
@@ -20,7 +24,7 @@ if st.button("获取图片", disabled=st.session_state.button_disabled):
             response = requests.post(
                 "https://simple-api.glif.app",
                 json={"id": "clxv8wwhj0000b3f5shjgq3xy", "inputs": [inputs]},
-                headers={"Authorization": "Bearer b54c3ea9ec3f0b518d14152a5db90995"},
+                headers={"Authorization": "Bearer {st.session_state.api_key}"},
             )
             
             # 解析 JSON 响应
