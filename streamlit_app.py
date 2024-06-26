@@ -4,6 +4,9 @@ import requests
 # Streamlit 应用的标题
 st.title("AIbase-职业/人物生成器")
 
+
+API_KEY = os.environ.get("API_KEY", None)
+
 if 'api_key' not in st.session_state:
     st.session_state.api_key = API_KEY
 
