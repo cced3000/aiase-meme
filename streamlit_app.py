@@ -98,7 +98,7 @@ if submitted:
                     # 调用 API 获取数据
                     response = requests.post(
                         "https://simple-api.glif.app",
-                        json={"id": "clxv8wwhj0000b3f5shjgq3xy", "inputs": [inputs]},
+                        json={"id": "clxvfhx7x0000sp82mnhnfn75", "inputs": [inputs]},
                         headers={"Authorization": f"Bearer {st.session_state.api_key}"},
                     )
 
