@@ -3,6 +3,11 @@ import requests
 import os
 from groq import Groq
 import time
+from supabase import create_client, Client
+
+SUPABASE_URL = os.environ.get("SUPABASE_URL", None)
+SUPABASE_KEY = os.environ.get("SUPABASE_KEY", None)
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 
  
@@ -21,6 +26,15 @@ if 'api_key' not in st.session_state:
 if 'groq' not in st.session_state:
     st.session_state.groq = Groq(api_key=st.session_state.groq_api_key)
     st.session_state.groq_initialized = True
+
+if 'supabase_url' not in st.session_state:
+    st.session_state.supabase_url = SUPABASE_URL
+
+if 'supabase_key' not in st.session_state:
+    st.session_state.supabase_key = SUPABASE_KEY
+
+if 'api_key' not in st.session_state:
+    st.session_state.api_key = API_KEY
 
 if 'statistics_text' not in st.session_state:
     st.session_state.statistics_text = ""
@@ -110,6 +124,16 @@ if submitted:
 
                     # 在 Streamlit 页面上显示图片
                     st.image(image_url, caption="生成图片")
+                    if image_url:
+                        try:
+                            # 将数据插入到Supabase数据库
+                            response = supabase.table("ggif").insert({
+                                "url": image_url,
+                                "keyword": inputs
+                            }).execute()
+                            st.success("图片保存成功")
+                        except Exception as e:
+                            st.error(f"请求失败: {e},图片保存失败")
                     # 生成成功后恢复按钮可点击状态
                     enable()
                     st.button("重新生成", on_click=enable)
