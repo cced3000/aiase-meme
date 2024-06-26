@@ -119,5 +119,14 @@ if submitted:
                     # 生成失败后恢复按钮可点击状态
                     enable()
                     st.button("重新生成", on_click=enable)
-                    
 
+
+# 设置 Streamlit 运行的端口
+port = int(os.environ.get("PORT", 8501))
+  
+
+# 启动 Streamlit 应用
+if __name__ == "__main__":
+    st._is_running_with_streamlit = False
+    from streamlit.web import cli as stcli
+    stcli.main(["run", "app.py", "--server.port", str(port)])
