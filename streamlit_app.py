@@ -5,8 +5,7 @@ from groq import Groq
 import time
 
 
-# Streamlit 应用的标题
-st.title("AIbase-职业/人物生成器")
+ 
 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", None)
 API_KEY = os.environ.get("API_KEY", None)
