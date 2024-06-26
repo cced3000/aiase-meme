@@ -3,11 +3,21 @@ import requests
 import os
 from groq import Groq
 
+
 # Streamlit 应用的标题
 st.title("AIbase-职业/人物生成器")
 
 
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", None)
 API_KEY = os.environ.get("API_KEY", None)
+
+
+if 'groq_api_key' not in st.session_state:
+    st.session_state.groq_api_key = GROQ_API_KEY
+ 
+if GROQ_API_KEY:
+    st.session_state.groq = Groq(api_key=GROQ_API_KEY)
+    st.session_state.groq_initialized = True
 
 if 'api_key' not in st.session_state:
     st.session_state.api_key = API_KEY
