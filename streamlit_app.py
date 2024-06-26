@@ -80,7 +80,7 @@ st.title("AIbase-职业/人物生成器")
 
 with st.form("groqform"):
 
-    inputs = st.text_input("请输入职业/人物", "ai prompt Engineer", max_chars=10)
+    inputs = st.text_input("请输入职业/人物", "", max_chars=10)
     
     submitted = st.form_submit_button(st.session_state.button_text, on_click=disable, disabled=st.session_state.button_disabled)
     
