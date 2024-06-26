@@ -24,14 +24,12 @@ if 'groq' not in st.session_state:
 
 if 'statistics_text' not in st.session_state:
     st.session_state.statistics_text = ""
-    
-    
+
 if 'button_disabled' not in st.session_state:
     st.session_state.button_disabled = False
 
 if 'button_text' not in st.session_state:
     st.session_state.button_text = "生成图片"
-    
 
 def disable():
     st.session_state.button_disabled = True
@@ -39,12 +37,9 @@ def disable():
 def enable():
     st.session_state.button_disabled = False
 
-def empty_st():
-    st.empty()
-    
 def check_input(text: str):
     stream = st.session_state.groq.chat.completions.create(
-        model="llama3-70b-8192",
+        model="llama3-8b-8192",
         messages=[
             {
                 "role": "system",
@@ -74,65 +69,55 @@ def check_input(text: str):
 st.title("AIbase-职业/人物生成器")
 
 # 创建一个输入框让用户输入内容，并限制输入字数不超过20个字
-
-
- 
-
 with st.form("groqform"):
-
-    inputs = st.text_input("请输入职业/人物", "", max_chars=10)
-    
+    inputs = st.text_input("请输入职业/人物", "ai prompt Engineer", max_chars=10)
     submitted = st.form_submit_button(st.session_state.button_text, on_click=disable, disabled=st.session_state.button_disabled)
-    
-    placeholder = st.empty()
-    
-    if submitted:
-        if not inputs:
-            st.error("请输入职业或者人物信息")
-            
-    # 当用户点击按钮时执行以下代码
-        if inputs:
-            st.session_state.button_disabled = True
-            # 检查输入内容
-            result = check_input(inputs)
-          
-            if result == 'True' or result == True:
-                st.session_state.statistics_text = "请勿输入敏感内容，遵守中国法律法规"
-                error_placeholder = st.empty()
-                error_placeholder.error(st.session_state.statistics_text)
-                time.sleep(2)
-                error_placeholder.empty()
-                st.session_state.statistics_text = ""
-                st.session_state.button_disabled = False
-                st.experimental_rerun()
-            else:
-                st.session_state.statistics_text = ""
-                with st.spinner('正在生成图片，请稍候...'):
-                    try:
-                        # 调用 API 获取数据
-                        response = requests.post(
-                            "https://simple-api.glif.app",
-                            json={"id": "clxv8wwhj0000b3f5shjgq3xy", "inputs": [inputs]},
-                            headers={"Authorization": f"Bearer {st.session_state.api_key}"},
-                        )
 
-                        # 解析 JSON 响应
-                        res = response.json()
+if submitted:
+    if not inputs:
+        st.error("请输入职业或者人物信息")
 
-                        # 获取图片 URL
-                        image_url = res['output']
+    if inputs:
+        st.session_state.button_disabled = True
+        # 检查输入内容
+        result = check_input(inputs)
 
-                        # 在 Streamlit 页面上显示图片
-                        st.image(image_url, caption="生成图片")
+        if result.strip() == 'True':
+            st.session_state.statistics_text = "请勿输入敏感内容，遵守中国法律法规"
+            st.error(st.session_state.statistics_text)
+            time.sleep(2)
+            st.session_state.statistics_text = ""
+            st.session_state.button_disabled = False
+            enable()
+            st.button("重置", on_click=enable)
+            st.rerun()
+        else:
+            st.session_state.statistics_text = ""
+            with st.spinner('正在生成图片，请稍候...'):
+                try:
+                    # 调用 API 获取数据
+                    response = requests.post(
+                        "https://simple-api.glif.app",
+                        json={"id": "clxv8wwhj0000b3f5shjgq3xy", "inputs": [inputs]},
+                        headers={"Authorization": f"Bearer {st.session_state.api_key}"},
+                    )
 
-                        # 生成成功后恢复按钮可点击状态
-                        st.session_state.button_disabled = False
+                    # 解析 JSON 响应
+                    res = response.json()
 
-                    except Exception as e:
-                        st.error(f"请求失败: {e}，请稍后重新生成。")
-                        # 生成失败后恢复按钮可点击状态
-                        st.session_state.button_disabled = False
+                    # 获取图片 URL
+                    image_url = res['output']
 
-# 运行 Streamlit 应用
-# 在终端运行以下命令启动应用
-# streamlit run app.py
+                    # 在 Streamlit 页面上显示图片
+                    st.image(image_url, caption="生成图片")
+                    # 生成成功后恢复按钮可点击状态
+                    enable()
+                    st.button("重置", on_click=enable)
+
+                except Exception as e:
+                    st.error(f"请求失败: {e}，请稍后重新生成。")
+                    # 生成失败后恢复按钮可点击状态
+                    enable()
+                    st.button("重置", on_click=enable)
+                    
+
