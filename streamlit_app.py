@@ -1,5 +1,7 @@
 import streamlit as st
 import requests
+import os
+from groq import Groq
 
 # Streamlit 应用的标题
 st.title("AIbase-职业/人物生成器")
