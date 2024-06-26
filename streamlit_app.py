@@ -39,11 +39,11 @@ def enable():
 
 def check_input(text: str):
     stream = st.session_state.groq.chat.completions.create(
-        model="llama3-8b-8192",
+        model="llama3-70b-8192",
         messages=[
             {
                 "role": "system",
-                "content": "你是一位中国社交网站的内容审核人员，判断用户提交的信息，是否有敏感风险。敏感风险包括：中国政府官员名字、敏感事件、色情成人信息、低俗信息、负面信息，如果有风险回复：True，否则回复：False"
+                "content": "你是一位中国社交网站的内容审核人员，判断用户提交的信息，是否有敏感风险。敏感风险包括：中国政府领导人名字、涉及政府敏感事件、色情成人信息、低俗信息、负面信息，如果有风险回复：True，否则回复：False"
             },
             {
                 "role": "user",
@@ -112,12 +112,12 @@ if submitted:
                     st.image(image_url, caption="生成图片")
                     # 生成成功后恢复按钮可点击状态
                     enable()
-                    st.button("重置", on_click=enable)
+                    st.button("重新生成", on_click=enable)
 
                 except Exception as e:
                     st.error(f"请求失败: {e}，请稍后重新生成。")
                     # 生成失败后恢复按钮可点击状态
                     enable()
-                    st.button("重置", on_click=enable)
+                    st.button("重新生成", on_click=enable)
                     
 
