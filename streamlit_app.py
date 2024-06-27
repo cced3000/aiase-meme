@@ -172,9 +172,9 @@ st.markdown("""
 latest_gifs = fetch_latest_gifs()
 if latest_gifs:
     st.subheader("最新生成的图片")
-    cols = st.columns(5)  # Create 5 columns for the grid layout
+    cols = st.columns(1)  # Create 5 columns for the grid layout
     for index, gif in enumerate(latest_gifs):
-        col = cols[index % 5]  # Use the columns in a circular fashion
+        col = cols[index % 1]  # Use the columns in a circular fashion
         with col:
             st.markdown(f"""
                 <div class="gif-container">
