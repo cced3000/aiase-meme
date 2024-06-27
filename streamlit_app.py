@@ -81,7 +81,7 @@ def check_input(text: str):
 
 
 def fetch_latest_gifs():
-    response = supabase.table("giff").select("*").order("created_at", desc=True).limit(20).execute()
+    response = supabase.table("ggif").select("*").order("created_at", desc=True).limit(20).execute()
     return response.data
 
 # 获取并展示最新的20条数据
