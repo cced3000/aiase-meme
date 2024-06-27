@@ -79,6 +79,18 @@ def check_input(text: str):
     print(result)
     return result
 
+
+def fetch_latest_gifs():
+    response = supabase.table("giff").select("*").order("created_at", desc=True).limit(20).execute()
+    return response.data
+
+# 获取并展示最新的20条数据
+latest_gifs = fetch_latest_gifs()
+if latest_gifs:
+    st.subheader("最新生成的图片")
+    for gif in latest_gifs:
+        st.image(gif['url'], caption=f"关键词: {gif['keyword']}")
+
 # Streamlit 应用的标题
 st.title("AIbase-职业/人物生成器")
 
