@@ -84,12 +84,7 @@ def fetch_latest_gifs():
     response = supabase.table("ggif").select("*").order("created_at", desc=True).limit(20).execute()
     return response.data
 
-# 获取并展示最新的20条数据
-latest_gifs = fetch_latest_gifs()
-if latest_gifs:
-    st.subheader("最新生成的图片")
-    for gif in latest_gifs:
-        st.image(gif['url'], caption=f"关键词: {gif['keyword']}")
+ 
 
 # Streamlit 应用的标题
 st.title("AIbase-职业/人物生成器")
@@ -157,3 +152,13 @@ if submitted:
                     st.button("重新生成", on_click=enable)
 
 
+
+# 获取并展示最新的20条数据
+latest_gifs = fetch_latest_gifs()
+if latest_gifs:
+    st.subheader("最新生成的图片")
+    cols = st.columns(5)  # Create 5 columns for the grid layout
+    for index, gif in enumerate(latest_gifs):
+        col = cols[index % 5]  # Use the columns in a circular fashion
+        with col:
+            st.image(gif['url'], caption=f"关键词: {gif['keyword']}")
