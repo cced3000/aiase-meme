@@ -153,12 +153,33 @@ if submitted:
 
 
 
+# Add CSS for bordered box with rounded corners
+st.markdown("""
+    <style>
+    .gif-container {
+        border: 1px solid #e6e6e6;
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    .gif-container img {
+        border-radius: 10px;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # 获取并展示最新的20条数据
 latest_gifs = fetch_latest_gifs()
 if latest_gifs:
     st.subheader("最新生成的图片")
-    cols = st.columns(2)  # Create 5 columns for the grid layout
+    cols = st.columns(5)  # Create 5 columns for the grid layout
     for index, gif in enumerate(latest_gifs):
-        col = cols[index % 2]  # Use the columns in a circular fashion
+        col = cols[index % 5]  # Use the columns in a circular fashion
         with col:
-            st.image(gif['url'], caption=f"关键词: {gif['keyword']}")
+            st.markdown(f"""
+                <div class="gif-container">
+                    <img src="{gif['url']}" alt="关键词: {gif['keyword']}" style="width:100%;">
+                    <p style="text-align: center;">关键词: {gif['keyword']}</p>
+                </div>
+            """, unsafe_allow_html=True)
+
