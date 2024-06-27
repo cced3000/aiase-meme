@@ -157,8 +157,8 @@ if submitted:
 latest_gifs = fetch_latest_gifs()
 if latest_gifs:
     st.subheader("最新生成的图片")
-    cols = st.columns(5)  # Create 5 columns for the grid layout
+    cols = st.columns(2)  # Create 5 columns for the grid layout
     for index, gif in enumerate(latest_gifs):
-        col = cols[index % 5]  # Use the columns in a circular fashion
+        col = cols[index % 2]  # Use the columns in a circular fashion
         with col:
             st.image(gif['url'], caption=f"关键词: {gif['keyword']}")
